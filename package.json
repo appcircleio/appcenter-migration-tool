@@ -1,0 +1,38 @@
+{
+  "name": "appcircle-appcenter-migration",
+  "version": "0.0.1",
+  "description": "CLI tool for running migration on Appcenter to Appcircle",
+  "main": "bin/appcircle-appcenter-migration",
+  "scripts": {
+    "watch": "rm -rf dist && tsc -w",
+    "build": "rm -rf dist && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Appcircle",
+  "license": "MIT",
+  "files": [
+    "bin/",
+    "dist/",
+    "scripts/"
+  ],
+  "resolutions": {
+    "ora/strip-ansi": "6.0.1"
+  },
+  "dependencies": {
+    "@appcircle/cli": "^2.2.1",
+    "axios": "^0.27.1",
+    "conf": "9.0.2",
+    "enquirer": "2.3.6",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/jsonfile": "^6.0.0",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/minimist": "^1.2.1",
+    "@types/node": "^15.12.5",
+    "cz-conventional-changelog": "^3.3.0",
+    "prettier": "^3.3.2",
+    "typescript": "4.3.4",
+    "zx": "^5.2.3"
+  }
+}

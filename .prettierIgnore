@@ -1,0 +1,6 @@
+bin/**
+
+# Ignored Files due to prettier 2.x
+coverage/**
+node_modules/**
+.git/**
