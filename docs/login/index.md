@@ -1,9 +1,9 @@
-# `appcenter-migration-cli login`
+# `appcenter-migration-tool login`
 
 Log in to connect Appcircle or App Center account
 
 ```plaintext
-appcenter-migration-cli login [command] [options]
+appcenter-migration-tool login [command] [options]
 ```
 
 ## Options inherited from parent commands

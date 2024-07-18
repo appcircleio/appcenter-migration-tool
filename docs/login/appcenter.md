@@ -1,9 +1,9 @@
-# `appcenter-migration-cli login appcenter`
+# `appcenter-migration-tool login appcenter`
 
 Log in to your App Center account
 
 ```plaintext
-appcenter-migration-cli login appcenter [options]
+appcenter-migration-tool login appcenter [options]
 ```
 
 ## Options

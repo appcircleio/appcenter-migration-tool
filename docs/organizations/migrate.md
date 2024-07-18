@@ -1,9 +1,9 @@
-# `appcenter-migration-cli organizations migrate`
+# `appcenter-migration-tool organizations migrate`
 
 Create App Center organization at Appcircle
 
 ```plaintext
-appcenter-migration-cli organizations migrate [options]
+appcenter-migration-tool organizations migrate [options]
 ```
 
 ## Options

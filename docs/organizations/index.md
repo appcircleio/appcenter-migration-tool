@@ -1,9 +1,9 @@
-# `appcenter-migration-cli organizations`
+# `appcenter-migration-tool organizations`
 
 List and update available organizations in App Center
 
 ```plaintext
-appcenter-migration-cli organizations [command] [options]
+appcenter-migration-tool organizations [command] [options]
 ```
 
 ## Options inherited from parent commands

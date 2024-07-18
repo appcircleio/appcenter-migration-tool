@@ -1,9 +1,9 @@
-# `appcenter-migration-cli organizations migrate-collaborators`
+# `appcenter-migration-tool organizations migrate-collaborators`
 
 Migrate App Center organization collaborators to Appcircle
 
 ```plaintext
-appcenter-migration-cli organizations migrate-collaborators [options]
+appcenter-migration-tool organizations migrate-collaborators [options]
 ```
 
 ## Options

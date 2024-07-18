@@ -1,8 +1,11 @@
 {
-  "name": "appcircle-appcenter-migration",
+  "name": "appcenter-migration-tool",
   "version": "0.0.1",
   "description": "CLI tool for running migration on Appcenter to Appcircle",
-  "main": "bin/appcircle-appcenter-migration",
+  "main": "bin/appcenter-migration-tool",
+  "bin": {
+    "appcenter-migration-tool": "bin/appcenter-migration-tool"
+  },
   "scripts": {
     "watch": "rm -rf dist && tsc -w",
     "build": "rm -rf dist && tsc",

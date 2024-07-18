@@ -1,9 +1,9 @@
-# `appcenter-migration-cli distribution-groups migrate-organization`
+# `appcenter-migration-tool distribution-groups migrate-organization`
 
 Migrate App Center Organization Distribution Group to Appcircle
 
 ```plaintext
-appcenter-migration-cli migrate-organization [options]
+appcenter-migration-tool migrate-organization [options]
 ```
 
 ## Options

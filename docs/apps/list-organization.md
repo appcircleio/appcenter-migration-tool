@@ -1,9 +1,9 @@
-# `appcenter-migration-cli apps list-organization`
+# `appcenter-migration-tool apps list-organization`
 
 List available Organization apps in App Center
 
 ```plaintext
-appcenter-migration-cli list-organization [options]
+appcenter-migration-tool list-organization [options]
 ```
 
 ## Options

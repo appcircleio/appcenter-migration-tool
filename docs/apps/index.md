@@ -1,9 +1,9 @@
-# `appcenter-migration-cli login`
+# `appcenter-migration-tool login`
 
 List and migrate available apps in App Center
 
 ```plaintext
-appcenter-migration-cli apps [command] [options]
+appcenter-migration-tool apps [command] [options]
 ```
 
 ## Options inherited from parent commands

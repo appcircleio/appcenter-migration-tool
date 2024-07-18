@@ -1,9 +1,9 @@
-# `appcenter-migration-cli apps migrate-profile`
+# `appcenter-migration-tool apps migrate-profile`
 
 Migrate app profile(s) to Appcircle Testing Distribution profile
 
 ```plaintext
-appcenter-migration-cli apps migrate-profile [options]
+appcenter-migration-tool apps migrate-profile [options]
 ```
 
 ## Options

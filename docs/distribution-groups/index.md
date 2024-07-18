@@ -1,9 +1,9 @@
-# `appcenter-migration-cli distribution-groups`
+# `appcenter-migration-tool distribution-groups`
 
 List available distribution groups in App Center
 
 ```plaintext
-appcenter-migration-cli distribution-groups [command] [options]
+appcenter-migration-tool distribution-groups [command] [options]
 ```
 
 ## Options inherited from parent commands
