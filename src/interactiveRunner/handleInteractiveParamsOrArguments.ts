@@ -51,11 +51,11 @@ const handleInteractiveParamsOrArguments = async (
       );
 
       if (organizationUsers?.length === 0) {
-        param.params = [selectAll, ...organizationUsers];
         spinner.fail(`There is no users in "${params.distributionGroupName}"`);
         return process.exit(1);
       }
 
+      param.params = [selectAll, ...organizationUsers];
       spinner.succeed('Organization Users fetched successfully');
     } else if (param.name === 'distGroupUsers') {
       const spinner = ora('Distribution Group Users fetching').start();

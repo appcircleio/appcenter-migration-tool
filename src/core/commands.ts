@@ -146,8 +146,8 @@ export const commands: CommandType[] = [
       },
       {
         command: 'list-organization',
-        description: 'List Organization Based App Center Apps',
-        longDescription: 'List Organization Based App Center Apps',
+        description: 'List App Center Apps Based on App Center Organization',
+        longDescription: 'List App Center Apps Based on App Center Organization',
         params: [
           {
             name: 'organizationName',
@@ -164,7 +164,7 @@ export const commands: CommandType[] = [
         params: [
           {
             name: 'profileNames',
-            description: 'App Center App Name for Testing Distribution profile',
+            description: 'App Center App Names to Migrate Appcircle Testing Distribution profile',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
           },
@@ -213,8 +213,8 @@ export const commands: CommandType[] = [
       },
       {
         command: 'migrate-organization',
-        description: 'Migrate App Center Organization Based Distribution Group to Appcircle',
-        longDescription: 'Migrate App Center Organization Distribution Group to Appcircle',
+        description: 'Migrate Distribution Groups from App Center Organization to Appcircle',
+        longDescription: 'Migrate Distribution Groups from App Center Organization to Appcircle',
         params: [
           {
             name: 'organizationName',

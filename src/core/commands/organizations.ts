@@ -98,6 +98,8 @@ const handleOrganizations = async (command: ProgramCommand, params: any) => {
 
       const organizationUsers = await getOrgUsers(params.organizationName);
 
+      console.log('params', params);
+
       const selectedAppcircleOrg = (await getAppcircleOrganizations()).filter((org: any) => params.appcircleOrganization.includes(org.name));
       for (let email of params.organizationUsers) {
         const selectedUser = organizationUsers.find((orgUser: any) => orgUser.email === email);

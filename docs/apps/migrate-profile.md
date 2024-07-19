@@ -9,7 +9,7 @@ appcenter-migration-tool apps migrate-profile [options]
 ## Options
 
 ```plaintext
-      --profileName       App Center App Name for Testing Distribution profile
+      --profileNames       App Center App Names to Migrate Appcircle Testing Distribution profile
 ```
 
 ## Options inherited from parent commands
