@@ -5,13 +5,18 @@ import { getAppDistributionGroups, getOrgDistributionGroups } from '../../servic
 import { createOra } from '../../utils/oraHelper';
 import { CommandTypes } from '../commands';
 import { commandWriter } from '../writer';
+import chalk from 'chalk';
+
 import {
   addTesterToTestingGroup,
   createTestingGroup,
+  getAppcircleOrganizations,
   getDistributionProfiles,
+  getSubOrgToken,
   getTestingGroups,
   updateProfileTestingGroups,
 } from '../../services/appcircleApi';
+import { collectErrorMessageFromData } from '../../main';
 
 const FULL_COMMANDS = [
   '-distribution-groups-list-organization',
@@ -67,19 +72,31 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
     case FULL_COMMANDS[2]:
       spinner.text = `${params.distributionGroupName} Migrating`;
       spinner.start();
+      const appcircleOrganizations = await getAppcircleOrganizations();
+      const selectedAppcircleOrg = appcircleOrganizations.find((org: any) => org.name === params.appcircleOrganization);
+      let subOrganizationToken: undefined | string;
 
-      const testingGroups = await getTestingGroups();
+      if (!selectedAppcircleOrg) {
+        spinner.fail(`Appcircle Organization ${params.appcircleOrganization} not found.`);
+        process.exit(1);
+      }
+      if ('rootOrganizationId' in selectedAppcircleOrg) {
+        subOrganizationToken = await getSubOrgToken(selectedAppcircleOrg.id);
+      }
+
+      const testingGroups = await getTestingGroups({ subOrgToken: subOrganizationToken });
       if (testingGroups.some((group: any) => group.name === params.distributionGroupName)) {
         spinner.fail(`"${params.distributionGroupName}" Distribution Group already exists.`);
         process.exit(1);
       }
 
-      await createTestingGroup({ name: params.distributionGroupName });
+      const createResponse = await createTestingGroup({ name: params.distributionGroupName, subOrgToken: subOrganizationToken });
 
-      const createdTestingGroupId = (await getTestingGroups()).find((group: any) => group.name === params.distributionGroupName).id;
       for (let userEmail of params.distGroupUsers) {
-        await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: createdTestingGroupId }).catch((err) => {
-          console.error(err);
+        await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: createResponse.id, token: subOrganizationToken }).catch((error) => {
+          const data = error.response?.data as any;
+          console.error(`\n${chalk.red('✖')} ${error.message} ${chalk.red(error.response?.statusText)}${collectErrorMessageFromData(data)}`);
+
           process.exit(1);
         });
       }
@@ -90,19 +107,35 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
     case FULL_COMMANDS[3]:
       spinner.text = `${params.distributionGroupNameForApp} Migrating`;
       spinner.start();
+      const appcircleOrgs = await getAppcircleOrganizations();
+      const selectedOrg = appcircleOrgs.find((org: any) => org.name === params.appcircleOrganization);
+      let subOrgToken: undefined | string;
+
+      if (!selectedOrg) {
+        spinner.fail(`Appcircle Organization ${params.appcircleOrganization} not found.`);
+        process.exit(1);
+      }
+      if ('rootOrganizationId' in selectedOrg) {
+        subOrgToken = await getSubOrgToken(selectedOrg.id);
+      }
 
       const testGroupName = params.appName + '-' + params.distributionGroupNameForApp;
-      await createTestingGroup({ name: testGroupName });
-
-      const createdAppTestingGroupId = (await getTestingGroups()).find((group: any) => group.name === testGroupName).id;
+      const response = await createTestingGroup({ name: testGroupName, subOrgToken: subOrgToken });
 
       for (let userEmail of params.distGroupUsersForApp) {
-        await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: createdAppTestingGroupId });
+        await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: response.id, token: subOrgToken }).catch((error) => {
+          const data = error.response?.data as any;
+          console.error(`\n${chalk.red('✖')} ${error.message} ${chalk.red(error.response?.statusText)}${collectErrorMessageFromData(data)}`);
+          process.exit(1);
+        });
       }
 
       // We try to match appName with the distribution profile name, if it exists we assign the newly created distribution group to the distribution profile automatically.
-      const testingProfile = (await getDistributionProfiles()).find((testingGroup: any) => testingGroup.name === params.appName);
-      await updateProfileTestingGroups(testingProfile.id, createdAppTestingGroupId, testingProfile.testingGroupIds);
+      const responseProfiles = await getDistributionProfiles({ subOrgToken });
+      const testingProfile = responseProfiles.find((testingGroup: any) => testingGroup.name === params.appName);
+      if (testingProfile) {
+        await updateProfileTestingGroups(testingProfile.id, response.id, testingProfile.testingGroupIds, subOrgToken);
+      }
 
       spinner.succeed(`${params.distributionGroupNameForApp} Migrated successfully.`);
 

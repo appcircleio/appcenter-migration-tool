@@ -243,6 +243,14 @@ export const commands: CommandType[] = [
             valueType: 'string',
             required: true,
           },
+          {
+            name: 'appcircleOrganization',
+            description: 'Appcircle Organization for Migration',
+            type: CommandParameterTypes.SELECT,
+            valueType: 'string',
+            requriedForInteractiveMode: true,
+            required: true,
+          },
         ],
       },
       {
@@ -273,6 +281,14 @@ export const commands: CommandType[] = [
             description: 'Distribution Group Users',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
+          },
+          {
+            name: 'appcircleOrganization',
+            description: 'Appcircle Organization for Migration',
+            type: CommandParameterTypes.SELECT,
+            valueType: 'string',
+            requriedForInteractiveMode: true,
+            required: true,
           },
           // {
           //   name: 'appcircleProfileName',

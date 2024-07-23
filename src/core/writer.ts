@@ -40,19 +40,6 @@ const writersMap: { [key in CommandTypes]: (data: any) => void } = {
         'Organization Name': distGroup.organization_name,
       })),
     );
-    // if (
-    //   data.fullCommandName ===
-    //     `${PROGRAM_NAME}-organizations-list-appcenter-distribution-groups-organization` ||
-    //   data.fullCommandName ===
-    //     `${PROGRAM_NAME}-organizations-list-appcenter-distribution-groups-app`
-    // ) {
-    //   console.table(
-    //     data?.data?.map((distGroup: any) => ({
-    //       ID: distGroup.id,
-    //       "Distribution Group Name": distGroup.name,
-    //     }))
-    //   );
-    // }
   },
 };
 

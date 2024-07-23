@@ -13,7 +13,7 @@ export class ProgramError extends Error {
   }
 }
 
-const collectErrorMessageFromData = (data: any) => {
+export const collectErrorMessageFromData = (data: any) => {
   if (data && (typeof data === 'string' || data instanceof String || data instanceof ArrayBuffer)) {
     return data;
   }

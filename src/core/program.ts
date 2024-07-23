@@ -71,7 +71,6 @@ export const createProgram = () => {
   createCommands(program, Commands, actionCb);
 
   program.hook('preAction', (thisCommand: any, actionCommand: any) => {
-    //console.log(thisCommand.name(), thisCommand.args , actionCommand.parent?.name())
     actionCb(createCommandActionCallback(actionCommand, thisCommand));
   });
   return {

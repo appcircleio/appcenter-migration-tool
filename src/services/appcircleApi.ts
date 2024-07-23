@@ -11,22 +11,14 @@ export const appcircleApi = axios.create({
   baseURL: AC_API_HOSTNAME.endsWith('/') ? AC_API_HOSTNAME : `${AC_API_HOSTNAME}/`,
 });
 
-// appcircleApi.interceptors.request.use((config) => {
-//   console.log('config:', config.baseURL);
-
-//   config.headers = getHeaders();
-
-//   return config;
-// });
-
-export const getHeaders = (token?: string, withToken = true): AxiosRequestConfig['headers'] => {
+export const getHeaders = (subOrgToken?: string, withToken = true): AxiosRequestConfig['headers'] => {
   let response: AxiosRequestConfig['headers'] = {
     accept: 'application/json',
     'User-Agent': 'Appcircle CLI/1.0.3',
   };
 
   if (withToken) {
-    response.Authorization = `Bearer ${token ?? readEnviromentConfigVariable(EnvironmentVariables.AC_ACCESS_TOKEN)}`;
+    response.Authorization = `Bearer ${subOrgToken ?? readEnviromentConfigVariable(EnvironmentVariables.AC_ACCESS_TOKEN)}`;
   }
   return response;
 };
@@ -100,7 +92,7 @@ export async function getSubOrgToken(subOrgId: string) {
 
     return getSubOrgToken.access_token;
   } catch (error) {
-    console.log('Error getting sub org token:', error);
+    console.log('Error Getting Sub Organization PAT:', error);
     process.exit(1);
   }
 }
@@ -119,43 +111,40 @@ export async function createDistributionProfile(options: OptionsType<{ name: str
     `/distribution/v2/profiles`,
     { name: options.name },
     {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${options.subOrgToken ?? readEnviromentConfigVariable(EnvironmentVariables.AC_ACCESS_TOKEN)}`,
-      },
+      headers: getHeaders(options.subOrgToken),
     },
   );
 
   return response.data;
 }
 
-export async function getTestingGroups() {
+export async function getTestingGroups(options?: { subOrgToken?: string }) {
   const response = await appcircleApi.get(`distribution/v2/testing-groups`, {
-    headers: getHeaders(),
+    headers: getHeaders(options?.subOrgToken),
   });
   return response.data;
 }
 
-export async function createTestingGroup(options: OptionsType<{ name: string }>) {
+export async function createTestingGroup(options: OptionsType<{ name: string; subOrgToken?: string }>) {
   const { name } = options;
   const response = await appcircleApi.post(
     `distribution/v2/testing-groups`,
     { name },
     {
-      headers: getHeaders(),
+      headers: getHeaders(options.subOrgToken),
     },
   );
   return response.data;
 }
 
-export async function addTesterToTestingGroup(options: OptionsType<{ testerEmail: string; testingGroupId: string }>) {
+export async function addTesterToTestingGroup(options: OptionsType<{ testerEmail: string; testingGroupId: string; token?: string }>) {
   const response = await appcircleApi.post(`distribution/v2/testing-groups/${options.testingGroupId}/testers`, [options.testerEmail], {
-    headers: getHeaders(),
+    headers: getHeaders(options.token),
   });
   return response.data;
 }
 
-export const updateProfileTestingGroups = async (profileId: string, testingGroupId: string, testingProfiles: any) => {
+export const updateProfileTestingGroups = async (profileId: string, testingGroupId: string, testingProfiles: any, token?: string) => {
   const testingGroupIds = Array.isArray(testingProfiles) ? [...testingProfiles, testingGroupId] : [testingGroupId];
 
   const response = await axios.patch(
@@ -164,10 +153,7 @@ export const updateProfileTestingGroups = async (profileId: string, testingGroup
       testingGroupIds: testingGroupIds,
     },
     {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${readEnviromentConfigVariable(EnvironmentVariables.AC_ACCESS_TOKEN)}`,
-      },
+      headers: getHeaders(token),
     },
   );
 
@@ -191,10 +177,7 @@ export const createSubOrganization = async (orgName: string) => {
       name: orgName,
     },
     {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${readEnviromentConfigVariable(EnvironmentVariables.AC_ACCESS_TOKEN)}`,
-      },
+      headers: getHeaders(),
     },
   );
 
@@ -223,10 +206,7 @@ export const inviteUserToOrganization = async (
       ],
     },
     {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${readEnviromentConfigVariable(EnvironmentVariables.AC_ACCESS_TOKEN)}`,
-      },
+      headers: getHeaders(),
     },
   );
   return invitationRes.data;
