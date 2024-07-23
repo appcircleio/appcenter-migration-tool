@@ -9,7 +9,8 @@
   "scripts": {
     "watch": "rm -rf dist && tsc -w",
     "build": "rm -rf dist && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postuninstall": "node ./postuninstall.js"
   },
   "author": "Appcircle",
   "license": "MIT",
@@ -22,11 +23,12 @@
     "ora/strip-ansi": "6.0.1"
   },
   "dependencies": {
-    "@appcircle/cli": "^2.2.1",
     "axios": "^0.27.1",
     "conf": "9.0.2",
     "enquirer": "2.3.6",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "commander": "^11.1.0",
+    "esm": "^3.2.25"
   },
   "devDependencies": {
     "@types/jsonfile": "^6.0.0",

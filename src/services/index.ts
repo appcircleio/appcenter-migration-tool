@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { API_HOSTNAME, OptionsType, appcenterApi } from './appcenterApi';
-import { getAppcirclePAT } from '../utils/appcircleCLIHelper';
+import { EnvironmentVariables, readEnviromentConfigVariable } from '../config';
+import { AC_API_HOSTNAME } from './appcircleApi';
 
 export const getOrganizations = async () => {
   const response = await appcenterApi('/orgs');
@@ -67,93 +68,4 @@ export const getDistGroupUsersForApp = async (orgName: string, appName: string, 
   const response = await appcenterApi(`/apps/${orgName}/${appName}/distribution_groups/${distGroupName}/members`);
 
   return response.data.sort((a: { email: string }, b: { email: any }) => a.email.localeCompare(b.email));
-};
-
-/* Appcircle API */
-
-export async function createDistributionProfile(options: OptionsType<{ name: string }>) {
-  const appcirclePAT = await getAppcirclePAT();
-
-  const response = await axios.post(
-    `https://api.appcircle.io/distribution/v2/profiles`,
-    { name: options.name, organizationId: '874d2262-aeae-4412-b1e4-48d0881331d3', pinned: true },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${appcirclePAT.AC_ACCESS_TOKEN}`,
-      },
-    },
-  );
-  return response.data;
-}
-
-export const createSubOrganization = async (orgName: string) => {
-  const appcirclePAT = await getAppcirclePAT();
-
-  const response = await axios.post(
-    'https://api.appcircle.io/identity/v1/organizations/current/sub-organizations',
-    {
-      name: orgName,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${appcirclePAT.AC_ACCESS_TOKEN}`,
-      },
-    },
-  );
-
-  return response.data;
-};
-
-export const updateProfileTestingGroups = async (profileId: string, testingGroupId: string, testingProfiles: any) => {
-  const appcirclePAT = await getAppcirclePAT();
-  const testingGroupIds = Array.isArray(testingProfiles) ? [...testingProfiles, testingGroupId] : [testingGroupId];
-
-  const response = await axios.patch(
-    `https://api.appcircle.io/distribution/v1/profiles/${profileId}`,
-    {
-      testingGroupIds: testingGroupIds,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${appcirclePAT.AC_ACCESS_TOKEN}`,
-      },
-    },
-  );
-
-  return response.data;
-};
-
-export const inviteUserToOrganization = async (
-  options: OptionsType<{
-    organizationId: string;
-    email: string;
-    role: string[] | string;
-  }>,
-) => {
-  const appcirclePAT = await getAppcirclePAT();
-  let roles = Array.isArray(options.role) ? options.role : [options.role];
-  roles = roles.includes('owner') ? ['owner'] : roles;
-
-  const invitationRes = await axios.patch(
-    `https://api.appcircle.io/identity/v1/users?action=invite&organizationId=${options.organizationId}`,
-    {
-      userEmail: options.email,
-      organizationsAndRoles: [
-        {
-          organizationId: options.organizationId,
-          roles: roles,
-        },
-      ],
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${appcirclePAT.AC_ACCESS_TOKEN}`,
-      },
-    },
-  );
-  return invitationRes.data;
 };

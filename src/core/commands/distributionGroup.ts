@@ -1,11 +1,17 @@
 import { noCommandFound } from './index';
 import { PROGRAM_NAME } from '../../constant';
 import { ProgramCommand } from '../../program';
-import { getAppDistributionGroups, getOrgApps, getOrgDistributionGroups, updateProfileTestingGroups } from '../../services';
-import { addTester, createDistGroup, getTestingDistProfiles, getTestingGroups } from '../../utils/appcircleCLIHelper';
+import { getAppDistributionGroups, getOrgDistributionGroups } from '../../services';
 import { createOra } from '../../utils/oraHelper';
 import { CommandTypes } from '../commands';
 import { commandWriter } from '../writer';
+import {
+  addTesterToTestingGroup,
+  createTestingGroup,
+  getDistributionProfiles,
+  getTestingGroups,
+  updateProfileTestingGroups,
+} from '../../services/appcircleApi';
 
 const FULL_COMMANDS = [
   '-distribution-groups-list-organization',
@@ -68,14 +74,11 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
         process.exit(1);
       }
 
-      await createDistGroup(params.distributionGroupName).catch((err) => {
-        console.error(err);
-        process.exit(1);
-      });
+      await createTestingGroup({ name: params.distributionGroupName });
 
       const createdTestingGroupId = (await getTestingGroups()).find((group: any) => group.name === params.distributionGroupName).id;
       for (let userEmail of params.distGroupUsers) {
-        await addTester(createdTestingGroupId, userEmail).catch((err) => {
+        await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: createdTestingGroupId }).catch((err) => {
           console.error(err);
           process.exit(1);
         });
@@ -89,23 +92,17 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
       spinner.start();
 
       const testGroupName = params.appName + '-' + params.distributionGroupNameForApp;
-      await createDistGroup(testGroupName).catch((err) => {
-        console.error(err);
-        process.exit(1);
-      });
+      await createTestingGroup({ name: testGroupName });
 
       const createdAppTestingGroupId = (await getTestingGroups()).find((group: any) => group.name === testGroupName).id;
 
       for (let userEmail of params.distGroupUsersForApp) {
-        await addTester(createdAppTestingGroupId, userEmail).catch((err) => {
-          console.error(err);
-          process.exit(1);
-        });
+        await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: createdAppTestingGroupId });
       }
 
       // We try to match appName with the distribution profile name, if it exists we assign the newly created distribution group to the distribution profile automatically.
-      const testingProfile = (await getTestingDistProfiles()).find((testingGroup: any) => testingGroup.name === params.appName);
-      await updateProfileTestingGroups(testingProfile.id, createdAppTestingGroupId, testingProfile.testingGroupIds).catch(() => {});
+      const testingProfile = (await getDistributionProfiles()).find((testingGroup: any) => testingGroup.name === params.appName);
+      await updateProfileTestingGroups(testingProfile.id, createdAppTestingGroupId, testingProfile.testingGroupIds);
 
       spinner.succeed(`${params.distributionGroupNameForApp} Migrated successfully.`);
 

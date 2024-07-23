@@ -1,12 +1,12 @@
 import { noCommandFound } from './index';
 import { PROGRAM_NAME } from '../../constant';
 import { ProgramCommand } from '../../program';
-import { createDistributionProfile, getAllAppCenterApps, getOrgApps } from '../../services';
-import { getAllTestingDistProfiles } from '../../utils/appcircleCLIHelper';
+import { getAllAppCenterApps, getOrgApps } from '../../services';
 import { createOra } from '../../utils/oraHelper';
 import { CommandTypes } from '../commands';
 import { commandWriter } from '../writer';
 import chalk from 'chalk';
+import { createDistributionProfile, getAppcircleOrganizations, getDistributionProfiles, getSubOrgToken } from '../../services/appcircleApi';
 
 const FULL_COMMANDS = ['-apps-list', '-apps-list-organization', '-apps-migrate-profile'];
 
@@ -40,26 +40,34 @@ const handleApps = async (command: ProgramCommand, params: any) => {
     case FULL_COMMANDS[2]:
       spinner.text = 'App Center Apps Profile(s) Migrating';
       spinner.start();
-      const profiles = await getAllTestingDistProfiles();
+      const appcircleOrgs = await getAppcircleOrganizations();
+      const selectedOrg = appcircleOrgs.find((org: any) => org.name === params.appcircleOrganization);
       const migratedProfiles = [];
       const existProfiles = [];
+      let subOrgToken: undefined | string;
+
+      if (!selectedOrg) {
+        spinner.fail(`Appcircle Organization ${params.appcircleOrganization} not found.`);
+        process.exit(1);
+      }
+      if ('rootOrganizationId' in selectedOrg) {
+        subOrgToken = await getSubOrgToken(selectedOrg.id);
+      }
+
+      const profiles = await getDistributionProfiles({ subOrgToken });
 
       for (const profile of params.profileNames) {
         if (profiles.some((acProfile: any) => acProfile.name === profile)) {
           existProfiles.push(profile);
         } else {
-          await createDistributionProfile({ name: profile }).catch((err) => {
-            // await createTestingDistributionProfile(profile).catch((err) => {
-            console.error(err);
-            process.exit(1);
-          });
+          await createDistributionProfile({ name: profile, subOrgToken: subOrgToken });
           migratedProfiles.push(profile);
         }
       }
-      spinner.succeed(migratedProfiles?.length > 0 ? `Testing Distribution profile(s) Created successfully.` : '');
 
+      spinner.succeed(migratedProfiles?.length > 0 ? `Testing Distribution profile(s) Created successfully.` : '');
       if (existProfiles.length > 0) {
-        console.log(chalk.bold(`\n${existProfiles}`), 'profile(s) already exist within Appcircle\n');
+        console.log(chalk.bold(`\n${existProfiles}`), `, profile(s) already exist within Appcircle/${selectedOrg.name} organization\n`);
       }
 
       break;

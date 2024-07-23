@@ -1,4 +1,5 @@
 import Conf from 'conf';
+import { AC_API_HOSTNAME } from './services/appcircleApi';
 
 export type ConsoleOutputType = 'json' | 'plain';
 
@@ -12,13 +13,23 @@ export const getConsoleOutputType = () => {
 };
 
 export enum EnvironmentVariables {
+  // App Center
   API_HOSTNAME = 'API_HOSTNAME',
   X_API_TOKEN = 'X_API_TOKEN',
+  // Appcircle
+  AC_ACCESS_TOKEN = 'AC_ACCESS_TOKEN',
+  AC_PAT = 'AC_PAT',
+  AC_API_HOSTNAME = 'AC_API_HOSTNAME',
+  AC_AUTH_HOSTNAME = 'AC_AUTH_HOSTNAME',
 }
 
 export const DefaultEnvironmentVariables = {
   API_HOSTNAME: 'https://api.appcenter.ms/v0.1',
   X_API_TOKEN: '',
+  AC_API_HOSTNAME: 'https://dev-api.appcircle.io',
+  AC_AUTH_HOSTNAME: 'https://auth.appcircle.io',
+  AC_ACCESS_TOKEN: '',
+  AC_PAT: '',
 };
 
 const config = new Conf<{
@@ -31,7 +42,7 @@ const config = new Conf<{
   },
 });
 
-export function writeEnviromentConfigVariable(variable: EnvironmentVariables, value: string): void {
+export function writeEnviromentConfigVariable(variable: EnvironmentVariables | string, value: string): void {
   const current = config.get('current') || 'default';
   try {
     config.set(`envs.${current}.${variable}`, value);
@@ -40,7 +51,7 @@ export function writeEnviromentConfigVariable(variable: EnvironmentVariables, va
   }
 }
 
-export function readEnviromentConfigVariable(variable: EnvironmentVariables): string {
+export function readEnviromentConfigVariable(variable: EnvironmentVariables | string): string {
   const current = config.get('current') || 'default';
   try {
     return config.get(`envs.${current}.${variable}`) || '';

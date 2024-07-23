@@ -9,10 +9,10 @@ import {
   getOrgApps,
   getAllAppCenterApps,
 } from '../services';
-import { getAllTestingDistProfiles, getAppcircleOrganizations, getTestingDistProfiles } from '../utils/appcircleCLIHelper';
 import ora from 'ora';
 //@ts-ignore https://github.com/enquirer/enquirer/issues/212
 import { prompt, AutoComplete, BooleanPrompt } from 'enquirer';
+import { getAppcircleOrganizations, getDistributionProfiles } from '../services/appcircleApi';
 
 const handleInteractiveParamsOrArguments = async (
   commandParams: CommandType['params'] | CommandType['arguments'] = [],
@@ -125,7 +125,7 @@ const handleInteractiveParamsOrArguments = async (
       spinner.succeed();
     } else if (param.name === 'profileNames') {
       const spinner = ora('App Center Apps fetching').start();
-      const appcircleTestDistProfiles = (await getAllTestingDistProfiles()).map((profile: any) => profile.name);
+      const appcircleTestDistProfiles = (await getDistributionProfiles()).map((profile: any) => profile.name);
       const orgApps = (await getAllAppCenterApps()).map((app: any, index: number) => ({
         message: `${index + 1}. ${app.owner.name}/${app.name} ${appcircleTestDistProfiles.includes(app.name) ? '| ✅ Available in Appcircle' : ''}`,
         value: app.name,
@@ -144,7 +144,7 @@ const handleInteractiveParamsOrArguments = async (
       const spinner = ora('Appcircle Profiles fetching').start();
       spinner.succeed('Appcircle Profiles fetched successfully');
       const appcenterApps = (await getAllAppCenterApps()).map((app: any) => app.name);
-      const profiles = (await getTestingDistProfiles()).map((app: any, index: number) => ({
+      const profiles = (await getDistributionProfiles()).map((app: any, index: number) => ({
         message: `${index + 1}. ${app.name} ${appcenterApps.includes(app.name) ? '| ✅ Migrated' : ''}`,
         value: app.name,
       }));
