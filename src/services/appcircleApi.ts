@@ -23,36 +23,17 @@ export const getHeaders = (subOrgToken?: string, withToken = true): AxiosRequest
   return response;
 };
 
-// Login
+/* Login */
 
 export async function getACToken(options: OptionsType<{ pat: string; subOrgId?: string }>) {
-  // console.log('AC_AUTH_HOSTNAME:', AUTH_HOSTNAME);
-  // const endpointURL = `${AUTH_HOSTNAME}/auth/v1/token`;
-  // const response = await axios.post(endpointURL, qs.stringify({ pat: options.pat }), {
-  //   headers: {
-  //     accept: 'application/json',
-  //     'content-type': 'application/x-www-form-urlencoded',
-  //   },
-  // });
-  // return response.data;
-
-  const url = 'https://dev-auth.appcircle.io/auth/realms/appcircle/protocol/openid-connect/token';
-  const headers: any = {
-    Authorization: options.pat,
-    'Content-Type': 'application/x-www-form-urlencoded',
-  };
-
-  if (options.subOrgId) {
-    headers['Sub-Organization-Id'] = options.subOrgId;
-  }
-
-  const data = new URLSearchParams();
-  data.append('grant_type', 'password');
-  data.append('client_id', 'appcircle-web');
-  data.append('client_secret', 'fc39c736-293a-450d-8c06-9e719e688251');
-  data.append('scope', 'openid profile');
-
-  const response = await axios.post(url, data, { headers });
+  console.log('AC_API_HOSTNAME:', AC_API_HOSTNAME);
+  const endpointURL = `${AC_API_HOSTNAME}/auth/v2/token`;
+  const response = await axios.post(endpointURL, qs.stringify({ pat: options.pat, subOrganizationId: options.subOrgId ?? '' }), {
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+  });
 
   if (options.subOrgId) {
     writeEnviromentConfigVariable(options.subOrgId, response.data);

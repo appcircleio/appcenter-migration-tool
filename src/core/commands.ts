@@ -290,13 +290,6 @@ export const commands: CommandType[] = [
             requriedForInteractiveMode: true,
             required: true,
           },
-          // {
-          //   name: 'appcircleProfileName',
-          //   description: 'Appcircle Testing Distribution Profile Name',
-          //   longDescription: 'Appcircle Testing Distribution Profile Name',
-          //   type: CommandParameterTypes.SELECT,
-          //   valueType: 'string',
-          // },
         ],
       },
     ],
