@@ -50,14 +50,39 @@ const handleOrganizations = async (command: ProgramCommand, params: any) => {
       spinner.text = 'Organization(s) creation migration in progress';
       spinner.start();
       params.organizationNames = Array.isArray(params.organizationNames) ? params.organizationNames : params.organizationNames.split(' ');
+      const invalidOrgNames = [];
+      const validOrgNames = [];
+      const appcenterOrgs = await getOrganizations();
+
+      if (appcenterOrgs.length === 0) {
+        spinner.fail('No organization found in App Center');
+        return;
+      }
 
       const appcircleOrgs = await getAppcircleOrganizations();
 
       for (let orgName of params.organizationNames) {
-        await createSubOrganization(addNameWithSuffix(appcircleOrgs, orgName));
+        console.log(
+          'appcenterOrgs.find((org: any) => org.name === orgName):',
+          appcenterOrgs.find((org: any) => org.name === orgName),
+        );
+        if (appcenterOrgs.find((org: any) => org.name === orgName)) {
+          await createSubOrganization(addNameWithSuffix(appcircleOrgs, orgName));
+          validOrgNames.push(orgName);
+        } else {
+          invalidOrgNames.push(orgName);
+        }
       }
 
-      spinner.succeed('Organization(s) migrated successfully.');
+      let successMessage = '';
+      if (validOrgNames.length > 0) {
+        successMessage += `${validOrgNames.length} Organization(s) migrated successfully ${invalidOrgNames.length > 0 ? ', ' : '.'}`;
+      }
+      if (invalidOrgNames.length > 0) {
+        successMessage += `Organization(s) "${invalidOrgNames.join(', ')}" were not found in App Center.`;
+      }
+
+      spinner.succeed(successMessage);
       break;
 
     case FULL_COMMANDS[2]:
@@ -79,7 +104,7 @@ const handleOrganizations = async (command: ProgramCommand, params: any) => {
         spinner.text = `${email} invited to selected organizations`;
       }
 
-      spinner.succeed('Selected Organization Collaborators migrated successfully.');
+      spinner.succeed('Given Organization Collaborators migrated successfully.');
 
       break;
 
