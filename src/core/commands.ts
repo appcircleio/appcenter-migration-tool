@@ -47,12 +47,12 @@ export const commands: CommandType[] = [
     subCommands: [
       {
         command: 'appcenter',
-        description: 'App Center Login',
+        description: 'App Center login',
         longDescription: 'Log in to your App Center account',
         params: [
           {
             name: 'appcenterToken',
-            description: 'App Center User API token',
+            description: 'App Center user API token',
             type: CommandParameterTypes.STRING,
             valueType: 'string',
           },
@@ -60,7 +60,7 @@ export const commands: CommandType[] = [
       },
       {
         command: 'appcircle',
-        description: 'Appcircle Login',
+        description: 'Appcircle login',
         longDescription: 'Log in to your Appcircle account',
         params: [
           {
@@ -81,18 +81,18 @@ export const commands: CommandType[] = [
     subCommands: [
       {
         command: 'list-appcenter-orgs',
-        description: 'List App Center Organizations',
+        description: 'List App Center organizations',
         longDescription: 'List available organizations in App Center',
         params: [],
       },
       {
         command: 'migrate-orgs',
-        description: 'Migrate App Center Organizations to Appcircle',
+        description: 'Migrate App Center organizations to Appcircle',
         longDescription: 'Migrate App Center organizations to Appcircle',
         params: [
           {
             name: 'organizationNames',
-            description: 'App Center Organization Names',
+            description: 'App Center organization names',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
           },
@@ -105,14 +105,14 @@ export const commands: CommandType[] = [
         params: [
           {
             name: 'organizationName',
-            description: 'App Center Organization Name',
+            description: 'App Center organization name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
             required: true,
           },
           {
             name: 'organizationUsers',
-            description: 'App Center Organizations Users for Migration',
+            description: 'App Center organizations users for migration',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
             required: true,
@@ -130,7 +130,7 @@ export const commands: CommandType[] = [
   },
   {
     command: CommandTypes.APPS,
-    description: 'App Center Apps',
+    description: 'App Center apps',
     longDescription: 'List and migrate available apps in App Center',
     params: [],
     subCommands: [
@@ -160,7 +160,7 @@ export const commands: CommandType[] = [
         params: [
           {
             name: 'profileNames',
-            description: 'App Center app names for migration to an Appcircle Testing Distribution profile',
+            description: 'App Center app names for migration to an Appcircle Testing Distribution Profile',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
           },
@@ -177,7 +177,7 @@ export const commands: CommandType[] = [
   },
   {
     command: CommandTypes.DISTRIBUTION_GROUPS,
-    description: 'App Center Distribution Groups',
+    description: 'App Center distribution groups',
     longDescription: 'List available distribution groups in App Center',
     params: [],
     subCommands: [
