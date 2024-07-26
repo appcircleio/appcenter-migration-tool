@@ -45,12 +45,16 @@ const handleError = (error: any) => {
       const data = error.response?.data as any;
       console.error(`\n${chalk.red('✖')} ${error.message} ${chalk.red(error.response?.statusText)}${collectErrorMessageFromData(data)}`);
       if (error.response?.status === 401) {
-        console.error(`Run ${chalk.cyan(`"${PROGRAM_NAME} login --help"`)} command for more information.`);
+        console.error(
+          `Run ${chalk.cyan(`"${PROGRAM_NAME} login ${error?.config?.baseURL?.includes('appcenter') ? 'appcenter' : 'appcircle'} --help"`)} command for more information.`,
+        );
       }
     } else if (error?.message) {
       console.error(`\n${chalk.red('✖')} ${error.message} ${chalk.red(error.response?.statusText)}${collectErrorMessageFromData(error)}`);
       if (error?.status === 401) {
-        console.error(`Run ${chalk.cyan(`"${PROGRAM_NAME} login --help"`)} command for more information.`);
+        console.error(
+          `Run ${chalk.cyan(`"${PROGRAM_NAME} login ${error.config.baseURL.includes('appcenter') ? 'appcenter' : 'appcircle'} --help"`)} command for more information.`,
+        );
       }
     } else if (error instanceof ProgramError) {
       console.error(chalk.red('✖'), error.message);

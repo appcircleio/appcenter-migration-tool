@@ -47,7 +47,7 @@ export const commands: CommandType[] = [
     subCommands: [
       {
         command: 'appcenter',
-        description: 'App Center Account',
+        description: 'App Center Login',
         longDescription: 'Log in to your App Center account',
         params: [
           {
@@ -60,7 +60,7 @@ export const commands: CommandType[] = [
       },
       {
         command: 'appcircle',
-        description: 'Appcircle Account',
+        description: 'Appcircle Login',
         longDescription: 'Log in to your Appcircle account',
         params: [
           {
@@ -76,19 +76,19 @@ export const commands: CommandType[] = [
   {
     command: CommandTypes.ORGANIZATIONS,
     description: 'Organizations',
-    longDescription: 'List and update available organizations in App Center',
+    longDescription: 'List and migrate available organizations in App Center',
     params: [],
     subCommands: [
       {
-        command: 'list-appcenter-organizations',
+        command: 'list-appcenter-orgs',
         description: 'List App Center Organizations',
-        longDescription: 'List available organizations at App Center',
+        longDescription: 'List available organizations in App Center',
         params: [],
       },
       {
-        command: 'migrate',
-        description: 'Migrate App Center Organization to Appcircle',
-        longDescription: 'Create App Center organization at Appcircle',
+        command: 'migrate-orgs',
+        description: 'Migrate App Center Organizations to Appcircle',
+        longDescription: 'Migrate App Center organizations to Appcircle',
         params: [
           {
             name: 'organizationNames',
@@ -99,33 +99,29 @@ export const commands: CommandType[] = [
         ],
       },
       {
-        command: 'migrate-collaborators',
-        description: 'Migrate App Center Organization Collaborators',
-        longDescription: 'Migrate App Center organization collaborators',
+        command: 'migrate-collab',
+        description: 'Migrate collaborators in App Center organization',
+        longDescription: 'Migrate collaborators in App Center organization',
         params: [
           {
             name: 'organizationName',
             description: 'App Center Organization Name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
-            requriedForInteractiveMode: true,
             required: true,
           },
           {
             name: 'organizationUsers',
-            description: 'Organizations Users for Migration',
+            description: 'App Center Organizations Users for Migration',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
-            requriedForInteractiveMode: true,
             required: true,
-            skipForInteractiveMode: true,
           },
           {
             name: 'appcircleOrganization',
-            description: 'Appcircle Organization for Migration',
+            description: 'Destination Appcircle organization for migration',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
-            requriedForInteractiveMode: true,
             required: true,
           },
         ],
@@ -139,19 +135,19 @@ export const commands: CommandType[] = [
     params: [],
     subCommands: [
       {
-        command: 'list',
-        description: 'List All App Center Apps',
+        command: 'list-all-apps',
+        description: 'List all App Center apps',
         longDescription: 'List available apps in App Center',
         params: [],
       },
       {
-        command: 'list-organization',
-        description: 'List App Center Apps Based on App Center Organization',
-        longDescription: 'List App Center Apps Based on App Center Organization',
+        command: 'list-org-apps',
+        description: 'List apps in specified App Center organization',
+        longDescription: 'List the available apps in the specified App Center organization',
         params: [
           {
             name: 'organizationName',
-            description: 'App Center Organization Name',
+            description: 'App Center organization name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
@@ -159,21 +155,20 @@ export const commands: CommandType[] = [
       },
       {
         command: 'migrate-profile',
-        description: 'Migrate App Center App to Appcircle Testing Distribution Profile',
-        longDescription: 'Migrate App Center App to Appcircle Testing Distribution Profile',
+        description: 'Migrate apps in specified App Center organization',
+        longDescription: 'Migrate the specified apps in the specified App Center organization',
         params: [
           {
             name: 'profileNames',
-            description: 'App Center App Names to Migrate Appcircle Testing Distribution profile',
+            description: 'App Center app names for migration to an Appcircle Testing Distribution profile',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
           },
           {
             name: 'appcircleOrganization',
-            description: 'Appcircle Organization for Migration',
+            description: 'Destination Appcircle organization for migration',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
-            requriedForInteractiveMode: true,
             required: true,
           },
         ],
@@ -187,107 +182,104 @@ export const commands: CommandType[] = [
     params: [],
     subCommands: [
       {
-        command: 'list-organization',
-        description: 'List App Center Organization Distribution Groups',
-        longDescription: 'List available distribution groups in App Center',
+        command: 'list-org-distgroups',
+        description: 'List distribution groups in specified App Center organization',
+        longDescription: 'List the available distribution groups in the specified App Center organization',
         params: [
           {
             name: 'organizationName',
-            description: 'Organization Name',
+            description: 'App Center organization name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
         ],
       },
       {
-        command: 'list-app',
-        description: 'List App Center App Distribution Groups',
-        longDescription: "List available App's Distribution Groups in App Center",
+        command: 'list-app-distgroups',
+        description: 'List distribution groups in specified App Center app',
+        longDescription: 'List the available distribution groups in the specified App Center app',
         params: [
           {
             name: 'organizationName',
-            description: 'Organization Name',
+            description: 'App Center organization name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
           {
             name: 'appName',
-            description: 'App Name',
-            longDescription: 'App Name',
+            description: 'App Center app name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
         ],
       },
       {
-        command: 'migrate-organization',
-        description: 'Migrate Distribution Groups from App Center Organization to Appcircle',
-        longDescription: 'Migrate Distribution Groups from App Center Organization to Appcircle',
+        command: 'migrate-org-distgroups',
+        description: 'Migrate distribution groups in specified App Center organization',
+        longDescription: 'Migrate the specified distribution groups in the specified App Center organization',
         params: [
           {
             name: 'organizationName',
-            description: 'Organization Name',
+            description: 'App Center organization name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
           {
             name: 'distributionGroupName',
-            description: 'Distribution Group Name',
+            description: 'App Center distribution group name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
           {
-            name: 'distGroupUsers',
-            description: 'Users to migrate from App Center Distribution Group',
+            name: 'distGroupUsersforOrg',
+            description: 'Users to migrate from the specified App Center distribution group',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
             required: true,
           },
           {
             name: 'appcircleOrganization',
-            description: 'Appcircle Organization for Migration',
+            description: 'Destination Appcircle organization for migration',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
-            requriedForInteractiveMode: true,
             required: true,
           },
         ],
       },
       {
-        command: 'migrate-app',
-        description: 'Migrate App Center App Distribution Group to Appcircle',
-        longDescription: 'Migrate App Center App Distribution Group to Appcircle',
+        command: 'migrate-app-distgroups',
+        description: 'Migrate distribution groups in specified App Center app',
+        longDescription: 'Migrate the specified distribution groups in the specified App Center app',
         params: [
           {
             name: 'organizationName',
-            description: 'App Center Organization Name',
+            description: 'App Center organization name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
           {
             name: 'appName',
-            description: 'App Center App Name',
+            description: 'App Center app name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
           {
             name: 'distributionGroupNameForApp',
-            description: 'App Center Distribution Group Name',
+            description: 'App Center distribution group name',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
           },
           {
-            name: 'distGroupUsersForApp',
-            description: 'Distribution Group Users',
+            name: 'distGroupUsersforApp',
+            description: 'Users to migrate from the specified App Center distribution group',
             type: CommandParameterTypes.MULTIPLE_SELECT,
             valueType: 'string',
           },
           {
             name: 'appcircleOrganization',
-            description: 'Appcircle Organization for Migration',
+            description: 'Destination Appcircle organization for migration',
             type: CommandParameterTypes.SELECT,
             valueType: 'string',
-            requriedForInteractiveMode: true,
             required: true,
           },
         ],

@@ -8,7 +8,7 @@ import { commandWriter } from '../writer';
 import chalk from 'chalk';
 import { createDistributionProfile, getAppcircleOrganizations, getDistributionProfiles, getSubOrgToken } from '../../services/appcircleApi';
 
-const FULL_COMMANDS = ['-apps-list', '-apps-list-organization', '-apps-migrate-profile'];
+const FULL_COMMANDS = ['-apps-list-all-apps', '-apps-list-org-apps', '-apps-migrate-profile'];
 
 const handleApps = async (command: ProgramCommand, params: any) => {
   const commandName = command.fullCommandName.split(PROGRAM_NAME).pop();
@@ -40,6 +40,8 @@ const handleApps = async (command: ProgramCommand, params: any) => {
     case FULL_COMMANDS[2]:
       spinner.text = 'App Center Apps Profile(s) Migrating';
       spinner.start();
+      params.profileNames = Array.isArray(params.profileNames) ? params.profileNames : params.profileNames.split(' ');
+
       const appcircleOrgs = await getAppcircleOrganizations();
       const selectedOrg = appcircleOrgs.find((org: any) => org.name === params.appcircleOrganization);
       const migratedProfiles = [];

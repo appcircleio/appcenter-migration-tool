@@ -1,6 +1,6 @@
 # `appcenter-migration-tool organizations list-appcenter-organizations`
 
-List available organizations at App Center
+List available organizations in App Center
 
 ```plaintext
 appcenter-migration-tool organizations list-appcenter-organizations

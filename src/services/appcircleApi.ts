@@ -5,7 +5,7 @@ import { EnvironmentVariables, readEnviromentConfigVariable, writeEnviromentConf
 import jwt from 'jsonwebtoken';
 
 export const AC_API_HOSTNAME = readEnviromentConfigVariable(EnvironmentVariables.AC_API_HOSTNAME);
-export const AUTH_HOSTNAME = readEnviromentConfigVariable(EnvironmentVariables.AC_AUTH_HOSTNAME);
+export const AC_AUTH_HOSTNAME = readEnviromentConfigVariable(EnvironmentVariables.AC_AUTH_HOSTNAME);
 
 export const appcircleApi = axios.create({
   baseURL: AC_API_HOSTNAME.endsWith('/') ? AC_API_HOSTNAME : `${AC_API_HOSTNAME}/`,
@@ -26,8 +26,7 @@ export const getHeaders = (subOrgToken?: string, withToken = true): AxiosRequest
 /* Login */
 
 export async function getACToken(options: OptionsType<{ pat: string; subOrgId?: string }>) {
-  console.log('AC_API_HOSTNAME:', AC_API_HOSTNAME);
-  const endpointURL = `${AC_API_HOSTNAME}/auth/v2/token`;
+  const endpointURL = `${AC_AUTH_HOSTNAME}/auth/v2/token`;
   const response = await axios.post(endpointURL, qs.stringify({ pat: options.pat, subOrganizationId: options.subOrgId ?? '' }), {
     headers: {
       accept: 'application/json',

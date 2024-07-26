@@ -15,7 +15,7 @@ export const getConsoleOutputType = () => {
 export enum EnvironmentVariables {
   // App Center
   API_HOSTNAME = 'API_HOSTNAME',
-  X_API_TOKEN = 'X_API_TOKEN',
+  APPCENTER_TOKEN = 'APPCENTER_TOKEN',
   // Appcircle
   AC_ACCESS_TOKEN = 'AC_ACCESS_TOKEN',
   AC_PAT = 'AC_PAT',
@@ -25,9 +25,9 @@ export enum EnvironmentVariables {
 
 export const DefaultEnvironmentVariables = {
   API_HOSTNAME: 'https://api.appcenter.ms/v0.1',
-  X_API_TOKEN: '',
+  APPCENTER_TOKEN: '',
   AC_API_HOSTNAME: 'https://dev-api.appcircle.io',
-  AC_AUTH_HOSTNAME: 'https://auth.appcircle.io',
+  AC_AUTH_HOSTNAME: 'https://dev-auth.appcircle.io',
   AC_ACCESS_TOKEN: '',
   AC_PAT: '',
 };

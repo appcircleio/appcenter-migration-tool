@@ -1,9 +1,9 @@
-# `appcenter-migration-tool apps list`
+# `appcenter-migration-tool apps list-all-apps`
 
-List available apps in App Center
+List all App Center apps
 
 ```plaintext
-appcenter-migration-tool apps list
+appcenter-migration-tool apps list-all-apps
 ```
 
 ## Options inherited from parent commands

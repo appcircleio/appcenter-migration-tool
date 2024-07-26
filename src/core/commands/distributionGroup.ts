@@ -19,10 +19,10 @@ import {
 import { collectErrorMessageFromData } from '../../main';
 
 const FULL_COMMANDS = [
-  '-distribution-groups-list-organization',
-  '-distribution-groups-list-app',
-  '-distribution-groups-migrate-organization',
-  '-distribution-groups-migrate-app',
+  '-distribution-groups-list-org-distgroups',
+  '-distribution-groups-list-app-distgroups',
+  '-distribution-groups-migrate-org-distgroups',
+  '-distribution-groups-migrate-app-distgroups',
 ];
 
 const handleDistributionGroup = async (command: ProgramCommand, params: any) => {
@@ -72,6 +72,8 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
     case FULL_COMMANDS[2]:
       spinner.text = `${params.distributionGroupName} Migrating`;
       spinner.start();
+      params.distGroupUsersforOrg = Array.isArray(params.distGroupUsersforOrg) ? params.distGroupUsersforOrg : params.distGroupUsersforOrg.split(' ');
+
       const appcircleOrganizations = await getAppcircleOrganizations();
       const selectedAppcircleOrg = appcircleOrganizations.find((org: any) => org.name === params.appcircleOrganization);
       let subOrganizationToken: undefined | string;
@@ -92,7 +94,7 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
 
       const createResponse = await createTestingGroup({ name: params.distributionGroupName, subOrgToken: subOrganizationToken });
 
-      for (let userEmail of params.distGroupUsers) {
+      for (let userEmail of params.distGroupUsersforOrg) {
         await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: createResponse.id, token: subOrganizationToken }).catch((error) => {
           const data = error.response?.data as any;
           console.error(`\n${chalk.red('✖')} ${error.message} ${chalk.red(error.response?.statusText)}${collectErrorMessageFromData(data)}`);
@@ -107,6 +109,8 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
     case FULL_COMMANDS[3]:
       spinner.text = `${params.distributionGroupNameForApp} Migrating`;
       spinner.start();
+      params.distGroupUsersforApp = Array.isArray(params.distGroupUsersforApp) ? params.distGroupUsersforApp : params.distGroupUsersforApp.split(' ');
+
       const appcircleOrgs = await getAppcircleOrganizations();
       const selectedOrg = appcircleOrgs.find((org: any) => org.name === params.appcircleOrganization);
       let subOrgToken: undefined | string;
@@ -122,7 +126,7 @@ const handleDistributionGroup = async (command: ProgramCommand, params: any) => 
       const testGroupName = params.appName + '-' + params.distributionGroupNameForApp;
       const response = await createTestingGroup({ name: testGroupName, subOrgToken: subOrgToken });
 
-      for (let userEmail of params.distGroupUsersForApp) {
+      for (let userEmail of params.distGroupUsersforApp) {
         await addTesterToTestingGroup({ testerEmail: userEmail, testingGroupId: response.id, token: subOrgToken }).catch((error) => {
           const data = error.response?.data as any;
           console.error(`\n${chalk.red('✖')} ${error.message} ${chalk.red(error.response?.statusText)}${collectErrorMessageFromData(data)}`);

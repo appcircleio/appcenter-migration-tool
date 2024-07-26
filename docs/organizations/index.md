@@ -1,6 +1,6 @@
 # `appcenter-migration-tool organizations`
 
-List and update available organizations in App Center
+List and migrate available organizations in App Center
 
 ```plaintext
 appcenter-migration-tool organizations [command] [options]
@@ -14,6 +14,6 @@ appcenter-migration-tool organizations [command] [options]
 
 ## Subcommands
 
-- [`list-appcenter-organizations`](list-appcenter-organizations.md)
-- [`migrate`](migrate.md)
-- [`migrate-collaborators`](migrate-collaborators.md)
+- [`list-appcenter-orgs`](list-appcenter-orgs.md)
+- [`migrate-orgs`](migrate-orgs.md)
+- [`migrate-collab`](migrate-collab.md)

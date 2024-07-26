@@ -1,4 +1,4 @@
-# `appcenter-migration-tool login`
+# `appcenter-migration-tool apps`
 
 List and migrate available apps in App Center
 
@@ -14,6 +14,6 @@ appcenter-migration-tool apps [command] [options]
 
 ## Subcommands
 
-- [`list`](list.md)
-- [`list-organization`](list-organization.md)
+- [`list-all-apps`](list-all-apps.md)
+- [`list-org-apps`](list-org-apps.md)
 - [`migrate-profile`](migrate-profile.md)

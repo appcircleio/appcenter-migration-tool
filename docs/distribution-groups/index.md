@@ -14,7 +14,7 @@ appcenter-migration-tool distribution-groups [command] [options]
 
 ## Subcommands
 
-- [`list-organization`](list-organization.md)
-- [`list-app`](list-app.md)
-- [`migrate-organization`](migrate-organization.md)
-- [`migrate-app`](migrate-app.md)
+- [`list-org-distgroups`](list-org-distgroups.md)
+- [`list-app-distgroups`](list-app-distgroups.md)
+- [`migrate-org-distgroups`](migrate-org-distgroups.md)
+- [`migrate-app-distgroups`](migrate-app-distgroups.md)

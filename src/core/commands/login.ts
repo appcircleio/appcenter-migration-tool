@@ -17,7 +17,7 @@ const handleLogin = async (command: ProgramCommand, params: any) => {
     commandWriter(CommandTypes.LOGIN, { fullCommandName: command.fullCommandName, data: { email: decoded?.payload?.email } });
   } else if (command.fullCommandName === `${PROGRAM_NAME}-login-appcenter`) {
     const response = await getAppCenterUser(params.appcenterToken);
-    writeEnviromentConfigVariable(EnvironmentVariables.X_API_TOKEN, params.appcenterToken);
+    writeEnviromentConfigVariable(EnvironmentVariables.APPCENTER_TOKEN, params.appcenterToken);
     commandWriter(CommandTypes.LOGIN, { fullCommandName: command.fullCommandName, data: response });
   } else {
     noCommandFound(command);

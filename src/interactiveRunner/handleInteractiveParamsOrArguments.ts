@@ -57,7 +57,7 @@ const handleInteractiveParamsOrArguments = async (
 
       param.params = [selectAll, ...organizationUsers];
       spinner.succeed('Organization Users fetched successfully');
-    } else if (param.name === 'distGroupUsers') {
+    } else if (param.name === 'distGroupUsersforOrg') {
       const spinner = ora('Distribution Group Users fetching').start();
       let organizationUsers = await getDistGroupUsers(params.organizationName, params.distributionGroupName).then((users) =>
         users.map((user: any, index: number) => ({ message: `${index + 1}. ${user.email}`, value: user.email })),
@@ -70,7 +70,7 @@ const handleInteractiveParamsOrArguments = async (
 
       param.params = [selectAll, ...organizationUsers];
       spinner.succeed('Organization Users fetched successfully');
-    } else if (param.name === 'distGroupUsersForApp') {
+    } else if (param.name === 'distGroupUsersforApp') {
       const spinner = ora('Distribution Group Users fetching').start();
       const appUsers = await getDistGroupUsersForApp(params.organizationName, params.appName, params.distributionGroupNameForApp).then((users) =>
         users.map((user: any, index: number) => ({ message: `${index + 1}. ${user.email}`, value: user.email })),
@@ -86,7 +86,7 @@ const handleInteractiveParamsOrArguments = async (
     } else if (param.name === 'appcircleOrganization') {
       const spinner = ora('Appcircle Organizations fetching').start();
       const appcircleOrganizations = (await getAppcircleOrganizations()).map((org: any, index: number) => ({
-        message: `${index + 1}. ${org.name}`,
+        message: `${index + 1}. ${org?.rootOrganizationName ? org.rootOrganizationName + ' | ' + org.name : org.name}`,
         value: org.name,
       }));
       param.params = appcircleOrganizations;
