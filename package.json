@@ -1,5 +1,5 @@
 {
-  "name": "appcenter-migration-tool",
+  "name": "@appcircle/appcenter-migration-tool",
   "version": "0.0.1",
   "description": "CLI tool for running migration on Appcenter to Appcircle",
   "main": "bin/appcenter-migration-tool",
@@ -19,9 +19,22 @@
     "dist/",
     "scripts/"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appcircleio/appcenter-migration-tool.git"
+  },
+  "keywords": [
+    "appcenter",
+    "migration",
+    "tool"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "resolutions": {
     "ora/strip-ansi": "6.0.1"
   },
+  "homepage": "https://github.com/appcircleio/appcenter-migration-tool#readme",
   "dependencies": {
     "axios": "^0.27.1",
     "conf": "9.0.2",

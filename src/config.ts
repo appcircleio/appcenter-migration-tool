@@ -26,8 +26,8 @@ export enum EnvironmentVariables {
 export const DefaultEnvironmentVariables = {
   API_HOSTNAME: 'https://api.appcenter.ms/v0.1',
   APPCENTER_TOKEN: '',
-  AC_API_HOSTNAME: 'https://dev-api.appcircle.io',
-  AC_AUTH_HOSTNAME: 'https://dev-auth.appcircle.io',
+  AC_API_HOSTNAME: 'https://api.appcircle.io',
+  AC_AUTH_HOSTNAME: 'https://auth.appcircle.io',
   AC_ACCESS_TOKEN: '',
   AC_PAT: '',
 };
